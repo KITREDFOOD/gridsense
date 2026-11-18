@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GridSense helps Australian households understand and reduce unnecessary electricity use through smart home energy monitoring and control.">
+  <title>GridSense | Smarter energy. Less waste.</title>
+  <style>
+    :root {
+      --navy: #071426;
+      --navy-2: #0c2038;
+      --blue: #1688df;
+      --blue-2: #55b8ff;
+      --yellow: #43C6A8;
+      --ink: #10243a;
+      --muted: #5d7085;
+      --pale: #f2f7fc;
+      --white: #ffffff;
+      --line: #dce7f1;
+      --green: #20a878;
+      --shadow: 0 18px 50px rgba(4, 25, 48, .12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink); background: var(--white); line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1120px, calc(100% - 44px)); margin: 0 auto; }
+    .topbar { background: #04101f; color: #b8c9da; font-size: .82rem; padding: 8px 0; }
+    .topbar .container { display:flex; justify-content:space-between; gap:16px; }
+    header {
+      position: sticky; top: 0; z-index: 20; background: rgba(7,20,38,.96);
+      backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav { min-height: 76px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+    .brand { display:flex; align-items:center; gap:11px; color:white; font-weight:850; font-size:1.35rem; letter-spacing:-.04em; }
+    .brand-mark {
+      width:38px; height:38px; display:grid; place-items:center; border-radius:12px;
+      color:var(--navy); background:var(--yellow); font-weight:950; font-size:1.2rem;
+      box-shadow: 0 0 24px rgba(67,198,168,.2);
+    }
+    .nav-links { display:flex; align-items:center; gap:27px; color:#d0dceb; font-size:.93rem; }
+    .nav-links a:hover { color:var(--yellow); }
+    .nav-cta, .btn {
+      display:inline-flex; justify-content:center; align-items:center; gap:9px; border:0; cursor:pointer;
+      border-radius:999px; padding:12px 19px; font-weight:750; transition:.2s ease;
+    }
+    .nav-cta, .btn-primary { color:#071426; background:var(--yellow); }
+    .nav-cta:hover, .btn-primary:hover { transform:translateY(-2px); box-shadow:0 10px 25px rgba(67,198,168,.2); }
+    .menu-toggle { display:none; color:white; background:none; border:1px solid #35506b; border-radius:10px; padding:8px 11px; font-size:1.1rem; }
+    .hero {
+      position:relative; overflow:hidden; color:white; padding:94px 0 90px;
+      background: radial-gradient(circle at 80% 25%, rgba(22,136,223,.25), transparent 30%),
+                  radial-gradient(circle at 10% 90%, rgba(85,184,255,.12), transparent 35%),
+                  linear-gradient(135deg, #071426 0%, #0a2441 60%, #0b3155 100%);
+    }
+    .hero:after {
+      content:""; position:absolute; width:520px; height:520px; right:-180px; bottom:-290px;
+      border:1px solid rgba(85,184,255,.22); border-radius:50%;
+      box-shadow:0 0 0 38px rgba(85,184,255,.035),0 0 0 82px rgba(85,184,255,.025),0 0 0 130px rgba(85,184,255,.018);
+    }
+    .hero-grid { display:grid; grid-template-columns:1.05fr .95fr; align-items:center; gap:60px; position:relative; z-index:1; }
+    .eyebrow { display:inline-flex; align-items:center; gap:9px; color:var(--yellow); text-transform:uppercase; letter-spacing:.13em; font-size:.75rem; font-weight:850; }
+    .eyebrow:before { content:""; width:23px; height:2px; background:var(--yellow); }
+    h1 { margin:18px 0 20px; font-size:clamp(2.8rem,6vw,5.3rem); line-height:.99; letter-spacing:-.065em; max-width:700px; }
+    h1 span { color:var(--blue-2); }
+    .hero-copy { max-width:570px; color:#c4d4e5; font-size:1.12rem; }
+    .hero-actions { display:flex; gap:13px; flex-wrap:wrap; margin-top:30px; }
+    .btn-secondary { color:white; border:1px solid #55718d; background:rgba(255,255,255,.04); }
+    .btn-secondary:hover { background:rgba(255,255,255,.1); }
+    .hero-note { color:#8fa9c3; font-size:.82rem; margin-top:19px; }
+    .visual-wrap { position:relative; min-height:390px; display:grid; place-items:center; }
+    .orbit { position:absolute; width:330px; height:330px; border:1px solid rgba(85,184,255,.3); border-radius:50%; }
+    .orbit:before,.orbit:after { content:""; position:absolute; inset:25px; border:1px dashed rgba(85,184,255,.25); border-radius:50%; }
+    .orbit:after { inset:65px; border-style:solid; opacity:.55; }
+    .house-card {
+      position:relative; width:min(390px,100%); padding:24px; border-radius:25px;
+      background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.055));
+      border:1px solid rgba(255,255,255,.2); box-shadow:0 28px 80px rgba(0,0,0,.25);
+      backdrop-filter:blur(14px);
+    }
+    .house-top { display:flex; justify-content:space-between; align-items:center; color:#d8e7f5; font-size:.84rem; }
+    .live-dot { width:8px; height:8px; border-radius:50%; display:inline-block; background:#4be0a4; margin-right:7px; box-shadow:0 0 12px #4be0a4; }
+    .house-icon { text-align:center; font-size:6rem; line-height:1.3; margin:17px 0 10px; filter:drop-shadow(0 12px 16px rgba(0,0,0,.25)); }
+    .mini-stats { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .mini-stat { background:rgba(4,16,31,.42); padding:13px; border-radius:14px; }
+    .mini-stat strong { display:block; color:white; font-size:1.12rem; }
+    .mini-stat span { color:#a8bfd5; font-size:.72rem; }
+    .float-chip { position:absolute; padding:12px 15px; border-radius:14px; background:white; color:var(--ink); box-shadow:var(--shadow); font-size:.8rem; font-weight:750; }
+    .float-chip b { color:var(--green); }
+    .chip-one { top:26px; right:-12px; }
+    .chip-two { bottom:26px; left:-20px; }
+    .trust-strip { background:#0c2038; color:#c5d5e5; padding:18px 0; }
+    .trust-inner { display:flex; justify-content:center; align-items:center; gap:38px; flex-wrap:wrap; font-size:.85rem; }
+    .trust-inner span { display:flex; align-items:center; gap:9px; }
+    .trust-inner b { color:white; }
+    section { padding:86px 0; }
+    .section-kicker { color:var(--blue); font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; font-weight:900; }
+    h2 { margin:10px 0 14px; font-size:clamp(2rem,4vw,3.15rem); letter-spacing:-.055em; line-height:1.08; }
+    .section-intro { color:var(--muted); max-width:680px; font-size:1.05rem; }
+    .center { text-align:center; }
+    .center .section-intro { margin:0 auto; }
+    .problem-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:42px; }
+    .problem-card { padding:25px; border:1px solid var(--line); border-radius:19px; background:white; box-shadow:0 8px 28px rgba(9,40,70,.045); }
+    .icon-box { width:48px; height:48px; display:grid; place-items:center; border-radius:14px; background:#e8f4ff; color:#0878c9; font-size:1.4rem; }
+    .problem-card h3 { margin:18px 0 7px; font-size:1.1rem; }
+    .problem-card p { margin:0; color:var(--muted); font-size:.92rem; }
+    .how { background:var(--pale); }
+    .how-grid { display:grid; grid-template-columns:.8fr 1.2fr; gap:70px; align-items:center; }
+    .steps { display:grid; gap:14px; margin-top:28px; }
+    .step { display:grid; grid-template-columns:42px 1fr; gap:14px; align-items:start; }
+    .step-num { width:38px; height:38px; border-radius:12px; display:grid; place-items:center; color:white; background:var(--blue); font-weight:850; }
+    .step h3 { margin:0 0 3px; font-size:1rem; }
+    .step p { margin:0; color:var(--muted); font-size:.9rem; }
+    .system-panel { background:var(--navy); color:white; border-radius:25px; padding:27px; box-shadow:var(--shadow); }
+    .system-panel h3 { margin:0 0 18px; font-size:1.15rem; }
+    .system-item { display:flex; align-items:center; gap:14px; padding:15px 0; border-top:1px solid rgba(255,255,255,.12); }
+    .system-item .icon-box { flex-shrink:0; background:#173b5c; color:var(--blue-2); }
+    .system-item strong { display:block; font-size:.95rem; }
+    .system-item small { display:block; color:#9db4ca; font-size:.8rem; }
+    .system-foot { margin-top:15px; padding:13px 15px; border-radius:13px; color:#d5e6f5; background:#102b47; font-size:.8rem; }
+    .benefits-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:38px; }
+    .benefit { padding:22px 19px; border-radius:17px; background:#f5f9fd; }
+    .benefit .emoji { font-size:1.7rem; }
+    .benefit h3 { margin:13px 0 6px; font-size:1rem; }
+    .benefit p { margin:0; color:var(--muted); font-size:.85rem; }
+    .audience { background:linear-gradient(135deg,#0a1b30,#0d3558); color:white; }
+    .audience-grid { display:grid; grid-template-columns:1fr 1fr; gap:55px; align-items:center; }
+    .audience .section-kicker { color:var(--yellow); }
+    .audience .section-intro { color:#b8cce0; }
+    .audience-points { display:grid; gap:13px; }
+    .audience-point { display:flex; align-items:center; gap:13px; padding:15px 17px; border:1px solid rgba(255,255,255,.13); border-radius:15px; background:rgba(255,255,255,.045); }
+    .check { color:var(--yellow); font-size:1.2rem; font-weight:900; }
+    .faq-list { max-width:800px; margin:36px auto 0; display:grid; gap:10px; }
+    details { border:1px solid var(--line); border-radius:14px; padding:17px 20px; background:white; }
+    summary { cursor:pointer; font-weight:750; list-style:none; display:flex; justify-content:space-between; gap:15px; }
+    summary::-webkit-details-marker { display:none; }
+    summary:after { content:"+"; color:var(--blue); font-size:1.25rem; line-height:1; }
+    details[open] summary:after { content:"−"; }
+    details p { color:var(--muted); margin:12px 0 2px; font-size:.92rem; }
+    .cta { padding:75px 0; background:#eaf5ff; }
+    .cta-box { background:var(--yellow); padding:38px; border-radius:24px; display:flex; justify-content:space-between; align-items:center; gap:25px; }
+    .cta-box h2 { margin:0 0 8px; font-size:clamp(1.8rem,3vw,2.6rem); }
+    .cta-box p { margin:0; color:#4c4a3d; }
+    .cta-box .btn { background:var(--navy); color:white; white-space:nowrap; }
+    footer { background:#04101f; color:#9eb2c7; padding:38px 0 22px; }
+    .footer-main { display:flex; justify-content:space-between; gap:35px; flex-wrap:wrap; padding-bottom:28px; }
+    footer .brand { margin-bottom:12px; }
+    footer p { max-width:360px; margin:0; font-size:.86rem; }
+    .footer-links { display:flex; gap:22px; flex-wrap:wrap; font-size:.86rem; }
+    .footer-links a:hover { color:var(--yellow); }
+    .fineprint { border-top:1px solid #1b2c40; padding-top:17px; font-size:.75rem; color:#728ba4; }
+    @media (max-width:850px) {
+      .hero-grid,.how-grid,.audience-grid { grid-template-columns:1fr; gap:40px; }
+      .visual-wrap { min-height:360px; }
+      .benefits-grid { grid-template-columns:repeat(2,1fr); }
+      .problem-grid { grid-template-columns:1fr; }
+      .nav-links { display:none; position:absolute; top:76px; left:0; right:0; padding:20px 24px 24px; background:#071426; flex-direction:column; align-items:flex-start; border-top:1px solid #243a51; }
+      .nav-links.open { display:flex; }
+      .menu-toggle { display:block; }
+      .nav-cta { display:none; }
+    }
+    @media (max-width:540px) {
+      .container { width:min(100% - 30px,1120px); }
+      .hero { padding:68px 0 55px; }
+      section { padding:65px 0; }
+      .topbar .container { justify-content:center; text-align:center; }
+      .topbar .container span:last-child { display:none; }
+      .visual-wrap { min-height:330px; }
+      .house-card { padding:19px; }
+      .orbit { width:280px; height:280px; }
+      .chip-one { right:-4px; top:8px; }
+      .chip-two { left:-5px; bottom:8px; }
+      .benefits-grid { grid-template-columns:1fr 1fr; gap:10px; }
+      .benefit { padding:17px 14px; }
+      .cta-box { padding:27px 22px; align-items:flex-start; flex-direction:column; }
+      .trust-inner { gap:14px 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar"><div class="container"><span>Designed for smarter energy use in Australian homes</span><span>Understand your energy. Take control of it.</span></div></div>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="GridSense home"><span class="brand-mark">G</span>GridSense</a>
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="#about">About</a><a href="#how">How it works</a><a href="#benefits">Benefits</a><a href="#faq">FAQs</a>
+      </nav>
+      <a class="nav-cta" href="#contact">Explore GridSense <span>↗</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">A smarter way to manage energy</div>
+          <h1>Smarter energy.<br><span>Less waste.</span></h1>
+          <p class="hero-copy">GridSense helps households understand where electricity is being used, identify unnecessary consumption and take greater control of their energy use.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#how">Discover how it works <span>→</span></a>
+            <a class="btn btn-secondary" href="#about">Why GridSense?</a>
+          </div>
+          <p class="hero-note">Built around practical energy awareness, automation and household control.</p>
+        </div>
+        <div class="visual-wrap" aria-label="Illustration of a connected smart home">
+          <div class="orbit"></div>
+          <div class="house-card">
+            <div class="house-top"><span>YOUR HOME, CONNECTED</span><span><i class="live-dot"></i>Monitoring concept</span></div>
+            <div class="house-icon">⌂</div>
+            <div class="mini-stats">
+              <div class="mini-stat"><strong>See usage</strong><span>Understand energy patterns</span></div>
+              <div class="mini-stat"><strong>Take control</strong><span>Manage connected appliances</span></div>
+            </div>
+          </div>
+          <div class="float-chip chip-one">⚡ Energy awareness</div>
+          <div class="float-chip chip-two">⌂ Built for households</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="trust-strip"><div class="container trust-inner">
+      <span>⌂ <b>Household-focused</b></span><span>◉ <b>Non-invasive room sensing</b></span><span>⚡ <b>Smarter energy decisions</b></span>
+    </div></div>
+
+    <section id="about">
+      <div class="container">
+        <div class="center">
+          <div class="section-kicker">The problem</div>
+          <h2>Small habits can add up.</h2>
+          <p class="section-intro">Appliances left running, lights left on and energy use that goes unnoticed can all contribute to unnecessary household electricity consumption.</p>
+        </div>
+        <div class="problem-grid">
+          <article class="problem-card"><div class="icon-box">⚡</div><h3>Unnoticed energy use</h3><p>It can be difficult to know which parts of the home are using electricity and when.</p></article>
+          <article class="problem-card"><div class="icon-box">◷</div><h3>Appliances left on</h3><p>Devices may continue running even when nobody is using the room or appliance.</p></article>
+          <article class="problem-card"><div class="icon-box">⌂</div><h3>Limited visibility</h3><p>Without useful information, households can struggle to spot patterns and make informed changes.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="how" id="how">
+      <div class="container how-grid">
+        <div>
+          <div class="section-kicker">How it works</div>
+          <h2>One connected system. A clearer picture of your home.</h2>
+          <p class="section-intro">GridSense brings together household monitoring, room sensing and connected plug-in smart switches to help people manage unnecessary energy use.</p>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div><h3>Monitor household electricity</h3><p>A central monitoring unit is installed at the home's main electrical input to track overall electricity use.</p></div></div>
+            <div class="step"><div class="step-num">2</div><div><h3>Understand room activity</h3><p>Room sensors use radar-based detection to identify occupancy and activity without cameras.</p></div></div>
+            <div class="step"><div class="step-num">3</div><div><h3>Manage connected appliances</h3><p>Plug-in smart switches connect compatible appliances to the GridSense system for monitoring and control.</p></div></div>
+            <div class="step"><div class="step-num">4</div><div><h3>Make informed decisions</h3><p>The app helps users view energy information, manage connected devices and see estimated savings.</p></div></div>
+          </div>
+        </div>
+        <div class="system-panel">
+          <h3>THE GRIDSENSE SYSTEM</h3>
+          <div class="system-item"><div class="icon-box">▦</div><div><strong>Central monitoring unit</strong><small>Tracks electricity use at the home's main input</small></div></div>
+          <div class="system-item"><div class="icon-box">◉</div><div><strong>Room radar sensors</strong><small>Detect room occupancy without cameras</small></div></div>
+          <div class="system-item"><div class="icon-box">▣</div><div><strong>Plug-in smart switches</strong><small>Fit into standard wall outlets and connect appliances</small></div></div>
+          <div class="system-item"><div class="icon-box">▤</div><div><strong>Room control panels and app</strong><small>Give households ways to view and manage the system</small></div></div>
+          <div class="system-foot">The system is designed to help identify avoidable energy use. Any savings will depend on household habits, appliance use and the settings chosen.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="benefits">
+      <div class="container">
+        <div class="center">
+          <div class="section-kicker">Why GridSense?</div>
+          <h2>More awareness. More control.</h2>
+          <p class="section-intro">GridSense is designed to make household energy information easier to understand and act on.</p>
+        </div>
+        <div class="benefits-grid">
+          <article class="benefit"><div class="emoji">🔎</div><h3>Spot wasted energy</h3><p>Identify patterns that may point to unnecessary electricity use.</p></article>
+          <article class="benefit"><div class="emoji">🎛️</div><h3>Take control</h3><p>Manage compatible connected appliances and room settings.</p></article>
+          <article class="benefit"><div class="emoji">📱</div><h3>Stay informed</h3><p>View household energy information through a connected app.</p></article>
+          <article class="benefit"><div class="emoji">📊</div><h3>Track progress</h3><p>Review usage trends and estimated savings over time.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="audience">
+      <div class="container audience-grid">
+        <div>
+          <div class="section-kicker">Made for Australian homes</div>
+          <h2>Make every kilowatt-hour count.</h2>
+          <p class="section-intro">GridSense is aimed at homeowners and families who want a clearer understanding of their electricity use and practical ways to reduce avoidable consumption.</p>
+        </div>
+        <div class="audience-points">
+          <div class="audience-point"><span class="check">✓</span><span>Households looking to better understand their power use</span></div>
+          <div class="audience-point"><span class="check">✓</span><span>Families wanting more control over connected appliances</span></div>
+          <div class="audience-point"><span class="check">✓</span><span>Homeowners interested in improving energy efficiency</span></div>
+          <div class="audience-point"><span class="check">✓</span><span>People who want useful information, not guesswork</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="center">
+          <div class="section-kicker">Good questions</div>
+          <h2>GridSense, explained.</h2>
+          <p class="section-intro">A few quick answers about the idea behind the system.</p>
+        </div>
+        <div class="faq-list">
+          <details><summary>Does GridSense use cameras?</summary><p>No. The proposed room sensors use radar-based detection to identify room occupancy and activity. They are designed to avoid camera-based monitoring.</p></details>
+          <details><summary>Do I need to replace my wall outlets?</summary><p>No. GridSense smart switches are designed as plug-in adapters that fit into ordinary wall outlets. Compatible appliances plug into the adapter.</p></details>
+          <details><summary>Will GridSense automatically lower my electricity bill?</summary><p>GridSense is designed to help households identify and manage unnecessary electricity use. Actual savings are not guaranteed and will depend on how the household uses the system.</p></details>
+          <details><summary>Can I control my home when I'm away?</summary><p>The proposed app includes remote monitoring and control features for compatible connected appliances, subject to the system's final design and connectivity.</p></details>
+          <details><summary>How is GridSense installed?</summary><p>The proposed system includes a central monitoring unit installed by a qualified technician, along with room sensors, control panels and plug-in smart switches.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="contact">
+      <div class="container">
+        <div class="cta-box">
+          <div><h2>Ready to rethink energy use?</h2><p>Explore how GridSense could help make your home more energy-aware.</p></div>
+          <a class="btn" href="mailto:hello@gridsense.example?subject=GridSense%20enquiry">Register your interest <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-main">
+        <div><a class="brand" href="#home"><span class="brand-mark">G</span>GridSense</a><p>Helping households understand their electricity use, identify waste and make more informed energy decisions.</p></div>
+        <div class="footer-links"><a href="#about">About</a><a href="#how">How it works</a><a href="#benefits">Benefits</a><a href="#faq">FAQs</a></div>
+      </div>
+      <div class="fineprint">© 2026 GridSense concept website. Product features and availability are proposed and subject to development. Savings are not guaranteed.</div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const links = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.textContent = open ? '✕' : '☰';
+    });
+    links.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.textContent = '☰';
+    }));
+  </script>
+</body>
+</html>
